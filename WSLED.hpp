@@ -9,6 +9,7 @@ class  WSLED{
   private:
     int pin;
     int pixelNum;
+    
     Adafruit_NeoPixel pixels;
     vector<float> hsv = {0.0f, 1.0f, 0.3f};
 
@@ -16,8 +17,9 @@ class  WSLED{
 
   public:
     WSLED(int pin, int num);
-    void show(int num, float h);
-    void show(int num, float h, float s, float v);
+    void showHSV(int num, float h);
+    void showHSV(int num, float h, float s, float v);
+    void showRGB(int num, float r, float g, float b);
 };
 
 #endif // LED_HPP

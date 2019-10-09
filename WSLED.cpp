@@ -6,7 +6,6 @@ using namespace std;
 WSLED::WSLED(int pin, int num) {
   pixels = Adafruit_NeoPixel(num, pin, NEO_GRB + NEO_KHZ800);
   pixels.begin(); // This initializes the NeoPixel library.
-  show(num, 0.0, 1.0f, 0.0f);
   this->hsv[2] = 0.5;
 }
 
@@ -57,19 +56,27 @@ vector<int> WSLED::hsv2rgb(vector<float> hsv) {
   return rgb;
 }
 
-void WSLED::show(int num, float h) {
+void WSLED::showHSV(int num, float h) {
   hsv[0] = h;
   vector<int> rgb = hsv2rgb(hsv);
-  Serial.printf("%d : %f : rgb ( %d, %d, %d)\n",num, h, rgb[0], rgb[1], rgb[2]);
+  // Serial.printf("%d : %f : rgb ( %d, %d, %d)\n",num, h, rgb[0], rgb[1], rgb[2]);
   pixels.setPixelColor(num, pixels.Color(rgb[0], rgb[1], rgb[2])); // Moderately bright green color.
   pixels.show(); // This sends the updated pixel color to the hardware.
 }
 
-void WSLED::show(int num, float h, float s, float v) {
+void WSLED::showHSV(int num, float h, float s, float v) {
   hsv[0] = h;
   hsv[1] = s;
   hsv[2] = v;
   vector<int> rgb = hsv2rgb(hsv);
   pixels.setPixelColor(num, pixels.Color(rgb[0], rgb[1], rgb[2])); // Moderately bright green color.
   pixels.show(); // This sends the updated pixel color to the hardware.
+}
+
+void WSLED::showRGB(int num, float r, float g, float b) {
+  pixels.setPixelColor(num, r, g, b);
+  portDISABLE_INTERRUPTS();
+  pixels.show(); // This sends the updated pixel color to the hardware.
+  portENABLE_INTERRUPTS();
+  Serial.printf("%x\n", pixels.getPixelColor(num));
 }
