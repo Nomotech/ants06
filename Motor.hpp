@@ -10,12 +10,17 @@ class  Motor{
     int motorB;
     int pwmPin;
     int channel;
+    volatile int& enc;
+    int margin = 5;
 
   public:
-    Motor(int motorA, int motorB, int pwmPin, int channel);
+    Motor(int motorA, int motorB, int pwmPin, int channel, volatile int& en);
     void setup();
     void rotate(float value);
     void stop();
+    void encoderReset();
+    int count();
+    bool setAngle(int ang);
 };
 
 #endif
